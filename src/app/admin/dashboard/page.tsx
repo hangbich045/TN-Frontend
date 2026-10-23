@@ -124,7 +124,7 @@ export default function AdminDashboardPage() {
       }
 
       const token = Cookies.get('token');
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
       const response = await fetch(`${BASE_URL}/reports/export-excel${query}`, {
         method: 'GET',

@@ -44,9 +44,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (tokenCookie && !userCookie) {
       // Fetch current user profile using token
       api.get('/auth/profile')
-        .then((data) => {
-          Cookies.set('user', JSON.stringify(data), { expires: 7 });
-          setUser(data as User);
+        .then((res) => {
+          // BE mới wrap: { success, data: user } hoặc trả trực tiếp
+          const userData = res?.data || res;
+          Cookies.set('user', JSON.stringify(userData), { expires: 7 });
+          setUser(userData as User);
         })
         .catch(() => {
           Cookies.remove('token');
@@ -60,11 +62,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const data = await api.post('/auth/login', { email, password });
-      Cookies.set('token', data.accessToken, { expires: 7 });
-      Cookies.set('user', JSON.stringify(data.user), { expires: 7 });
-      setUser(data.user);
-      return data.user as User;
+      const res = await api.post('/auth/login', { email, password });
+      // BE mới wrap: { success, message, data: { accessToken, user } }
+      // BE cũ trả trực tiếp: { accessToken, user }
+      const payload = res?.data || res;
+      Cookies.set('token', payload.accessToken, { expires: 7 });
+      Cookies.set('user', JSON.stringify(payload.user), { expires: 7 });
+      setUser(payload.user);
+      return payload.user as User;
     } finally {
       setLoading(false);
     }
@@ -74,7 +79,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setLoading(true);
     try {
       const res = await api.post('/auth/register', formData);
-      return res;
+      // Unwrap nếu cần
+      return res?.data || res;
     } finally {
       setLoading(false);
     }

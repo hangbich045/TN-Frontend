@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       backendEndpoint = '/auth/avatar';
     }
 
-    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+    const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
     const headers: HeadersInit = {};
     if (token) {

@@ -35,7 +35,7 @@ const VerifyPage = () => {
     }
     setSubmitting(true);
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${BASE_URL}/auth/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -123,7 +123,7 @@ const VerifyPage = () => {
             onClick={async () => {
               setResending(true);
               try {
-                const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+                const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
                 const res = await fetch(`${BASE_URL}/auth/resend-otp`, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },

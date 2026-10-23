@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 class ApiClient {
   private getHeaders(isMultipart = false) {
@@ -59,6 +59,15 @@ class ApiClient {
   async put(endpoint: string, body: unknown) {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: 'PUT',
+      headers: this.getHeaders(),
+      body: JSON.stringify(body),
+    });
+    return this.handleResponse(response);
+  }
+
+  async patch(endpoint: string, body: unknown) {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PATCH',
       headers: this.getHeaders(),
       body: JSON.stringify(body),
     });
